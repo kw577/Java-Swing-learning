@@ -11,21 +11,12 @@ public class App {
 			@Override
 			public void run() {
 				
+				new MainFrame();
+								
 			}
 			
 		});
-		
-		
-		JFrame frame = new JFrame("Hello World");
-		frame.setVisible(true);
-		
-		//Zamkniecie okna aplikacji powoduje tez zakonczenie procesu aplikacji
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		frame.setSize(600, 500);
-		
-		
+			
 	}
 
 }
