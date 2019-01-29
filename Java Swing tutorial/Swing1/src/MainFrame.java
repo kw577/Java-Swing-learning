@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 	
 	
 	
-	private JButton btn;
+	
 	private TextPanel textPanel;
 	private Toolbar toolbar;
 	
@@ -28,30 +28,17 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		
 		textPanel = new TextPanel();
-		btn = new JButton("Click me!");
+		
 		toolbar = new Toolbar();
 		
+		toolbar.setTextPanel(textPanel);
 		
 		
-		
-		
-		btn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Metoda uruchamiana po wcisieciu przycisku
-				
-				textPanel.appendText("Hello\n");
-			}
 			
-		});
-		
-		
 		
 		add(toolbar, BorderLayout.NORTH);
 		
 		add(textPanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
-		add(btn, BorderLayout.SOUTH);
 		
 		
 		setVisible(true);
