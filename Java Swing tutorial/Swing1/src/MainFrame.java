@@ -18,6 +18,8 @@ public class MainFrame extends JFrame {
 	
 	private JButton btn;
 	private TextPanel textPanel;
+	private Toolbar toolbar;
+	
 	
 	public MainFrame() {
 		super("Hello World");
@@ -27,6 +29,10 @@ public class MainFrame extends JFrame {
 		
 		textPanel = new TextPanel();
 		btn = new JButton("Click me!");
+		toolbar = new Toolbar();
+		
+		
+		
 		
 		
 		btn.addActionListener(new ActionListener() {
@@ -40,6 +46,9 @@ public class MainFrame extends JFrame {
 			
 		});
 		
+		
+		
+		add(toolbar, BorderLayout.NORTH);
 		
 		add(textPanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
 		add(btn, BorderLayout.SOUTH);
