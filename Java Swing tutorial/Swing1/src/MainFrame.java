@@ -31,7 +31,15 @@ public class MainFrame extends JFrame {
 		
 		toolbar = new Toolbar();
 		
-		toolbar.setTextPanel(textPanel);
+		toolbar.setStringListener(new StringListener() {
+
+			@Override
+			public void textEmitted(String text) {
+				// TODO Auto-generated method stub
+				textPanel.appendText(text);
+			}
+			
+		});
 		
 		
 			
