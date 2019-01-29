@@ -15,9 +15,9 @@ import javax.swing.JTextArea;
 public class MainFrame extends JFrame {
 	
 	
-	private JTextArea textArea;
-	private JButton btn;
 	
+	private JButton btn;
+	private TextPanel textPanel;
 	
 	public MainFrame() {
 		super("Hello World");
@@ -25,7 +25,7 @@ public class MainFrame extends JFrame {
 		// UWAGA  - w tym przykladzie zastosowano BorderLayout   - tu opisano inne dostepne layout'y https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
 		setLayout(new BorderLayout());
 		
-		textArea = new JTextArea();
+		textPanel = new TextPanel();
 		btn = new JButton("Click me!");
 		
 		
@@ -35,13 +35,13 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Metoda uruchamiana po wcisieciu przycisku
 				
-				textArea.append("Hello\n");
+				textPanel.appendText("Hello\n");
 			}
 			
 		});
 		
 		
-		add(textArea, BorderLayout.CENTER);  // ustawione w centrum i wypelnia cale dostepne miejsce
+		add(textPanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
 		add(btn, BorderLayout.SOUTH);
 		
 		
