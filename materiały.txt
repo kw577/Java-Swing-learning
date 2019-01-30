@@ -1,3 +1,5 @@
+﻿https://www.youtube.com/watch?v=RC-PautMWZg&list=PLvYrdvmgS1ociCMwdKm7SsQp9Cge8fbD_     - pelny kurs
+
 https://www.youtube.com/watch?v=OxaSi3nSl3I     - tutorial
 http://web.mit.edu/6.005/www/sp14/psets/ps4/java-6-tutorial/components.html      - opis wszytkich komponentów swing
 https://www.eclipse.org/windowbuilder/    - graficzne budowanie GUI w Swing
