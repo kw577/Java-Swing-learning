@@ -4,7 +4,8 @@ public class FormEvent extends EventObject {
 	
 	private String name;
 	private String occupation;
-
+	private int ageCategory;
+	private String empCat;
 	
 	// konstruktor 1
 	public FormEvent(Object source) {
@@ -13,11 +14,13 @@ public class FormEvent extends EventObject {
 	}
 	
 	// konstruktor 2
-	public FormEvent(Object source, String name, String occupation) {
+	public FormEvent(Object source, String name, String occupation, int ageCat, String empCat) {
 		super(source);
 		
 		this.name = name;
 		this.occupation = occupation;
+		this.ageCategory = ageCat;
+		this.empCat = empCat;
 	}
 	
 	
@@ -37,6 +40,22 @@ public class FormEvent extends EventObject {
 
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
+	}
+
+	public int getAgeCategory() {
+		return ageCategory;
+	}
+
+	public void setAgeCategory(int ageCategory) {
+		this.ageCategory = ageCategory;
+	}
+
+	public String getEmpCat() {
+		return empCat;
+	}
+
+	public void setEmpCat(String empCat) {
+		this.empCat = empCat;
 	}
 
 

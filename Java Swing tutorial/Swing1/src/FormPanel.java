@@ -6,8 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -22,6 +24,7 @@ public class FormPanel extends JPanel{
 	private JTextField occupationField;
 	private JButton okBtn;
 	private FormListener formListener;
+	private JComboBox empCombo;
 	
 	private JList ageList;
 	
@@ -37,15 +40,31 @@ public class FormPanel extends JPanel{
 		nameField = new JTextField(10);
 		occupationField = new JTextField(10);
 		ageList = new JList();
+		empCombo = new JComboBox();
 		
 		DefaultListModel ageModel = new DefaultListModel();
 		
 		//// TEST
-		ageModel.addElement("Under 18");
-		ageModel.addElement("18 to 65");
-		ageModel.addElement("65 or over");
+		ageModel.addElement(new AgeCategory(0, "Under 18"));
+		ageModel.addElement(new AgeCategory(1, "18 to 65"));
+		ageModel.addElement(new AgeCategory(2, "65 or over"));
 				
 		///////////
+		
+		
+		// Set up combo box
+		DefaultComboBoxModel empModel = new DefaultComboBoxModel();
+		empModel.addElement("employed");
+		empModel.addElement("self-employed");
+		empModel.addElement("unemployed");
+		empCombo.setModel(empModel);
+		empCombo.setSelectedIndex(0); // domyslnie wybrana opcja
+		empCombo.setEditable(true); // dzieki temu uzytkownik moze dopisac inna opcje (poza dostepnymi w liscie ComboBox)
+		
+		//////////////////
+		
+		
+		
 		
 		ageList.setModel(ageModel);
 		
@@ -63,12 +82,16 @@ public class FormPanel extends JPanel{
 				// TODO Auto-generated method stub
 				String name = nameField.getText();
 				String occupation = occupationField.getText();
-				String ageCat = (String) ageList.getSelectedValue();
+				AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();
+				String empCat = (String)empCombo.getSelectedItem();
 				
-				System.out.println("ageCat:" + ageCat);
 				
 				
-				FormEvent ev = new FormEvent(this, name, occupation);
+				System.out.println("ageCat:" + ageCat + "  id: " + ageCat.getId());
+				System.out.println("empCat:" + empCat);
+				
+				
+				FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat);
 				
 				
 				if(formListener != null) {
@@ -89,6 +112,15 @@ public class FormPanel extends JPanel{
 		
 		//Jedno obramowanie wewatrz drugiego
 		setBorder(BorderFactory.createCompoundBorder(outerBorder, innerBorder));
+		
+		
+		layoutComponents();
+	}
+	
+	
+	
+	// metoda dodana w celu zwiêkszenia czytelnoœci konstruktora FormPanel
+	public void layoutComponents() {
 		
 		
 		//UWAGA - zastosowano GridBagLayout   - rozmieszcza wg siatki kolumn i wierszy gdzie punkt (0,0) to lewy orny rog
@@ -147,6 +179,16 @@ public class FormPanel extends JPanel{
 		gc.weightx = 1; // szerokosc kolumny
 		gc.weighty = 0.2; // wysokosc wiersza
 		
+		
+		// opis pola wyboru
+		gc.gridx = 0;
+		gc.gridy = 2;
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 5); // padding (odstep wokol zawartosci komorki)
+		add(new JLabel("Age: "), gc);
+		
+		
+				
 		gc.gridx = 1;
 		gc.gridy = 2;
 		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
@@ -155,31 +197,80 @@ public class FormPanel extends JPanel{
 		
 		
 		
+		////////////////////////// Next row /////////////////////////////////
+		
+		gc.weightx = 1; // szerokosc kolumny
+		gc.weighty = 0.2; // wysokosc wiersza
+		
+		gc.gridy++;  // nastepny wiersz
+		
+		
+		// opis pola wyboru
+		gc.gridx = 0;
+	
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 5); // padding (odstep wokol zawartosci komorki)
+		add(new JLabel("Employment: "), gc);
 		
 		
 		
 		
-		////////////////////////// Fourth row /////////////////////////////////
+		
+		gc.gridx = 1;
+		
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
+		gc.insets = new Insets(0, 0, 0, 0);
+		add(empCombo, gc);
+
+		
+		///
+		
+		
+			
+		////////////////////////// Przycisk submit /////////////////////////////////
 		
 		gc.weightx = 1; // szerokosc kolumny
 		gc.weighty = 2; // wysokosc wiersza
 		
 		gc.gridx = 1;
-		gc.gridy = 3;
+		gc.gridy++; // nastepny wiersz
 		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
 		gc.insets = new Insets(0, 0, 0, 0);
 		add(okBtn, gc);
-		
-		
-		
+	
 		
 		///
+		
+		
+		
 	}
+	
+	
 	
 	public void setFormListener(FormListener listener) {
 		this.formListener = listener;
 	}
 	
-	
+	class AgeCategory {
+		
+		private int id;
+		private String text;
+		
+		public AgeCategory(int id, String text) {
+			
+			this.id = id;
+			this.text = text;
+			
+			
+		}
+		
+		public String toString() {
+			return text;
+		}
+		
+		public int getId() {
+			return id;
+		}
+	}
 	
 }
