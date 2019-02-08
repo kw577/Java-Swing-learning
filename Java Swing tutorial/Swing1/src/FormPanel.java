@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,7 +28,9 @@ public class FormPanel extends JPanel{
 	private JComboBox empCombo;
 	
 	private JList ageList;
-	
+	private JCheckBox citizenCheck;
+	private JTextField taxField;
+	private JLabel taxLabel;
 	
 	public FormPanel() {
 		Dimension dim = getPreferredSize();
@@ -41,6 +44,31 @@ public class FormPanel extends JPanel{
 		occupationField = new JTextField(10);
 		ageList = new JList();
 		empCombo = new JComboBox();
+		
+		citizenCheck = new JCheckBox();
+		taxField = new JTextField(10);
+		taxLabel = new JLabel("Tax ID: ");
+		
+		
+		
+		citizenCheck.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				boolean isTicked = citizenCheck.isSelected();
+				taxLabel.setEnabled(isTicked);
+				taxField.setEnabled(isTicked);
+				
+			}
+			
+		});
+		
+		
+		
+		// Set up tax ID
+		taxField.setEnabled(false);
+		taxLabel.setEnabled(false);
 		
 		DefaultListModel ageModel = new DefaultListModel();
 		
@@ -84,14 +112,16 @@ public class FormPanel extends JPanel{
 				String occupation = occupationField.getText();
 				AgeCategory ageCat = (AgeCategory) ageList.getSelectedValue();
 				String empCat = (String)empCombo.getSelectedItem();
-				
+				String taxId = taxField.getText();
+				boolean usCitizen = citizenCheck.isSelected();
 				
 				
 				System.out.println("ageCat:" + ageCat + "  id: " + ageCat.getId());
 				System.out.println("empCat:" + empCat);
 				
 				
-				FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), empCat);
+				FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), 
+						empCat, taxId, usCitizen);
 				
 				
 				if(formListener != null) {
@@ -225,8 +255,65 @@ public class FormPanel extends JPanel{
 		
 		///
 		
+		////////////////////////// Next row /////////////////////////////////
 		
-			
+		gc.weightx = 1; // szerokosc kolumny
+		gc.weighty = 0.2; // wysokosc wiersza
+		
+		gc.gridy++;  // nastepny wiersz
+		
+		
+		// opis pola wyboru
+		gc.gridx = 0;
+	
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 5); // padding (odstep wokol zawartosci komorki)
+		add(new JLabel("US Citizen: "), gc);
+		
+		
+		
+		
+		
+		gc.gridx = 1;
+		
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
+		gc.insets = new Insets(0, 0, 0, 0);
+		add(citizenCheck, gc);
+
+		
+		///
+		
+		
+		
+		////////////////////////// Next row /////////////////////////////////
+		
+		gc.weightx = 1; // szerokosc kolumny
+		gc.weighty = 0.2; // wysokosc wiersza
+		
+		gc.gridy++;  // nastepny wiersz
+		
+		
+		// opis pola wyboru
+		gc.gridx = 0;
+	
+		gc.anchor = GridBagConstraints.FIRST_LINE_END; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 5); // padding (odstep wokol zawartosci komorki)
+		add(taxLabel, gc);
+		
+		
+		
+		
+		
+		gc.gridx = 1;
+		
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
+		gc.insets = new Insets(0, 0, 0, 0);
+		add(taxField, gc);
+
+		
+		///
+		
+		
 		////////////////////////// Przycisk submit /////////////////////////////////
 		
 		gc.weightx = 1; // szerokosc kolumny
