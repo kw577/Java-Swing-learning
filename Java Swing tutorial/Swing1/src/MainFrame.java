@@ -1,10 +1,9 @@
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 
 
@@ -32,6 +31,10 @@ public class MainFrame extends JFrame {
 		toolbar = new Toolbar();
 		
 		formPanel = new FormPanel();
+		
+		
+		setJMenuBar(createMenuBar());
+		
 		
 		toolbar.setStringListener(new StringListener() {
 
@@ -71,6 +74,39 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	
+	private JMenuBar createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		
+		//przyciski na pasku menu
+		JMenu fileMenu = new JMenu("File");
+		JMenu windowMenu = new JMenu("Window");
+		
+		
+		
+		// po rozwinieciu przycisku "File" na pasku menu pokazuja sie funkcje
+		JMenuItem exportDataItem = new JMenuItem("Export Data...");
+		JMenuItem importDataItem = new JMenuItem("Import Data...");
+		JMenuItem exitItem = new JMenuItem("Exit");
+		
+		fileMenu.add(exportDataItem);
+		fileMenu.add(importDataItem);
+		fileMenu.addSeparator();
+		fileMenu.add(exitItem);
+		
+		
+		// po rozwinieciu przycisku "Window" na pasku menu pokazuja sie funkcje
+		JMenu showMenu = new JMenu("Show"); // lista rozwijana funkcji
+		JMenuItem showFormItem = new JMenuItem("Person Form");
+		showMenu.add(showFormItem);
+		windowMenu.add(showMenu);
+		
+		
+		
+		menuBar.add(fileMenu);
+		menuBar.add(windowMenu);
+		
+		
+		return menuBar;
+	}
 	
 }
