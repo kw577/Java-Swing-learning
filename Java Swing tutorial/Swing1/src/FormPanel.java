@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -32,6 +34,12 @@ public class FormPanel extends JPanel{
 	private JTextField taxField;
 	private JLabel taxLabel;
 	
+	private JRadioButton maleRadio;
+	private JRadioButton femaleRadio;
+	private ButtonGroup genderGroup;
+	
+	
+	
 	public FormPanel() {
 		Dimension dim = getPreferredSize();
 		dim.width = 250;
@@ -49,7 +57,21 @@ public class FormPanel extends JPanel{
 		taxField = new JTextField(10);
 		taxLabel = new JLabel("Tax ID: ");
 		
+		maleRadio = new JRadioButton("male");
+		femaleRadio = new JRadioButton("female");
+		genderGroup = new ButtonGroup();
 		
+		//wykrywanie ktory przycisk grupy zostal wybrany
+		maleRadio.setActionCommand("male");
+		femaleRadio.setActionCommand("female");
+		
+		
+		maleRadio.setSelected(true); // domyslnie zaznaczony przcisk grupy przyciskow
+		
+		
+		// tworzenie grupy przyciskow
+		genderGroup.add(maleRadio);
+		genderGroup.add(femaleRadio);
 		
 		citizenCheck.addActionListener(new ActionListener() {
 
@@ -116,12 +138,17 @@ public class FormPanel extends JPanel{
 				boolean usCitizen = citizenCheck.isSelected();
 				
 				
+				//wykrywanie ktory przycisk grupy zostal wybrany
+				String gender = genderGroup.getSelection().getActionCommand();
+				
+				
+				
 				System.out.println("ageCat:" + ageCat + "  id: " + ageCat.getId());
 				System.out.println("empCat:" + empCat);
 				
 				
 				FormEvent ev = new FormEvent(this, name, occupation, ageCat.getId(), 
-						empCat, taxId, usCitizen);
+						empCat, taxId, usCitizen, gender);
 				
 				
 				if(formListener != null) {
@@ -313,6 +340,58 @@ public class FormPanel extends JPanel{
 		
 		///
 		
+		
+		
+		////////////////////////// Next row /////////////////////////////////
+		
+		gc.weightx = 1; // szerokosc kolumny
+		gc.weighty = 0.05; // wysokosc wiersza
+		
+		gc.gridy++;  // nastepny wiersz
+		
+		
+		
+		gc.gridx = 0;
+	
+		gc.anchor = GridBagConstraints.LINE_END; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 5); // padding (odstep wokol zawartosci komorki)
+		add(new JLabel("Gender: "), gc);
+		
+		
+		
+		
+		
+		gc.gridx = 1;
+		
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do lewego gornego rogu komorki siatki 
+		gc.insets = new Insets(0, 0, 0, 0);
+		add(maleRadio, gc);
+
+		
+		///
+		
+	////////////////////////// Next row /////////////////////////////////
+		
+		gc.weightx = 1; // szerokosc kolumny
+		gc.weighty = 0.2; // wysokosc wiersza
+		
+		gc.gridy++;  // nastepny wiersz
+		
+		
+		
+		gc.gridx = 1;
+	
+		gc.anchor = GridBagConstraints.FIRST_LINE_START; // wyrownanie do prawej (prawej krawedzi komorki ukladu GridBagLayout)
+		gc.insets = new Insets(0, 0, 0, 0); // padding (odstep wokol zawartosci komorki)
+		add(femaleRadio, gc);
+		
+		
+		
+		
+		
+	
+		
+		///
 		
 		////////////////////////// Przycisk submit /////////////////////////////////
 		
