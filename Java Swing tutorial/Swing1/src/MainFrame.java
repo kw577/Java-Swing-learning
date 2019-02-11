@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -96,14 +99,32 @@ public class MainFrame extends JFrame {
 		
 		// po rozwinieciu przycisku "Window" na pasku menu pokazuja sie funkcje
 		JMenu showMenu = new JMenu("Show"); // lista rozwijana funkcji
-		JMenuItem showFormItem = new JMenuItem("Person Form");
+		JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
+		
+		showFormItem.setSelected(true); // wartosc domyslna
+		
 		showMenu.add(showFormItem);
 		windowMenu.add(showMenu);
 		
-		
+		showFormItem.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem)e.getSource();
+				
+				// ukrywa formularz po odznaczeniu opcji w pasku menu 
+				formPanel.setVisible(menuItem.isSelected());
+				
+			}
+			
+		});
 		
 		menuBar.add(fileMenu);
 		menuBar.add(windowMenu);
+		
+		
+		
 		
 		
 		return menuBar;
