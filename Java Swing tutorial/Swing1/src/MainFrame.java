@@ -1,9 +1,11 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,6 +27,7 @@ public class MainFrame extends JFrame {
 	private TextPanel textPanel;
 	private Toolbar toolbar;
 	private FormPanel formPanel;
+	private JFileChooser fileChooser;
 	
 	public MainFrame() {
 		super("Hello World");
@@ -38,6 +41,11 @@ public class MainFrame extends JFrame {
 		
 		formPanel = new FormPanel();
 		
+		fileChooser = new JFileChooser();
+		
+		//w celu ookreslenia jakie typy pliku beda obslugiwane (rozszerzenia pliku)
+		//jesli chcemy miec wiecej filtrow plikow nalezy stworzyc dla nich osobne klasy i dodac w kolejnej linii analogicznie jak dla filtra ponizej
+		fileChooser.addChoosableFileFilter(new PersonFileFilter());
 		
 		setJMenuBar(createMenuBar());
 		
@@ -76,6 +84,7 @@ public class MainFrame extends JFrame {
 		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setMinimumSize(new Dimension(600, 500));
 		setSize(600, 500);
 		
 	}
@@ -137,12 +146,49 @@ public class MainFrame extends JFrame {
 		// ctrl + x    - zamyka program
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 		
+		importDataItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// otwiera okno wyszukiwania pliku po kliknieciu opcji "import" w menu glownym i pobiera plik
+				if(fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getSelectedFile()); // wydruk w konsoli nazwy pobranego pliku
+				}
+				
+			}
+			
+		});
+		
+		
+		exportDataItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// otwiera okno wyszukiwania pliku po kliknieciu opcji "import" w menu glownym i pobiera plik
+				if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getSelectedFile()); // wydruk w konsoli nazwy pobranego pliku
+				}
+				
+			}
+			
+		});
 		
 		exitItem.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				/* TEST
+				
+				String text = JOptionPane.showInputDialog(MainFrame.this,
+						"Enter your user name.",
+						"Enter User Name", JOptionPane.OK_OPTION|JOptionPane.INFORMATION_MESSAGE);//JOptionPane.INFORMATION_MESSAGE - zmiana wygladu ikonki w oknie, 
+				//inne ikonki w oknaach: JOptionPane.WARNING_MESSAGE, JOptionPane.QUESTION_MESSAGE
+				
+				
+				System.out.println("\n" + text);
+				*/
 				
 				//okno z potwierdzeniem ze chcemy zakonczyc program
 				int action = JOptionPane.showConfirmDialog(MainFrame.this, "Do you really want to exit the application?", 
