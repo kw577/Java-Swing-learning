@@ -4,6 +4,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -56,6 +57,14 @@ public class FormPanel extends JPanel{
 		citizenCheck = new JCheckBox();
 		taxField = new JTextField(10);
 		taxLabel = new JLabel("Tax ID: ");
+		
+		okBtn = new JButton("OK");
+		
+		// skrot klawiszowy do potwierdzenia formularza:   alt + o
+		okBtn.setMnemonic(KeyEvent.VK_O);
+		
+		nameLabel.setDisplayedMnemonic(KeyEvent.VK_N);
+		nameLabel.setLabelFor(nameField);
 		
 		maleRadio = new JRadioButton("male");
 		femaleRadio = new JRadioButton("female");
@@ -123,7 +132,6 @@ public class FormPanel extends JPanel{
 		ageList.setSelectedIndex(1); // domyslnie wybrane pole listy
 		
 		
-		okBtn = new JButton("OK");
 		
 		okBtn.addActionListener(new ActionListener() {
 

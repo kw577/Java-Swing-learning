@@ -1,12 +1,15 @@
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 
 
@@ -123,9 +126,35 @@ public class MainFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(windowMenu);
 		
+		// mnemonics sa uzywane z przyciskiem Alt
+		// skrot klawiszowy do menu File to:   Alt + F
+		fileMenu.setMnemonic(KeyEvent.VK_F);
+		
+		// skrot klawiszowy do menu Exit (wyjscie z programu) to:   Alt + X
+		exitItem.setMnemonic(KeyEvent.VK_X);
 		
 		
+		// ctrl + x    - zamyka program
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 		
+		
+		exitItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				//okno z potwierdzeniem ze chcemy zakonczyc program
+				int action = JOptionPane.showConfirmDialog(MainFrame.this, "Do you really want to exit the application?", 
+						"Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
+				
+				if(action == JOptionPane.OK_OPTION) {
+					System.exit(0);
+				}
+					
+			}
+			
+		});
 		
 		return menuBar;
 	}
