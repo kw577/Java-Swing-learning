@@ -32,6 +32,8 @@ public class MainFrame extends JFrame {
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
 	private Controller controller;
+	private TablePanel tablePanel;
+	
 	
 	public MainFrame() {	
 		super("Hello World");
@@ -45,9 +47,13 @@ public class MainFrame extends JFrame {
 		
 		formPanel = new FormPanel();
 		
+		tablePanel = new TablePanel();
+		
 		fileChooser = new JFileChooser();
 		
 		controller = new Controller();
+		
+		tablePanel.setData(controller.getPeople());
 		
 		//w celu ookreslenia jakie typy pliku beda obslugiwane (rozszerzenia pliku)
 		//jesli chcemy miec wiecej filtrow plikow nalezy stworzyc dla nich osobne klasy i dodac w kolejnej linii analogicznie jak dla filtra ponizej
@@ -83,7 +89,7 @@ public class MainFrame extends JFrame {
 				
 				
 				controller.addPerson(e);
-				
+				tablePanel.refresh();
 			}
 		});
 		
@@ -93,7 +99,7 @@ public class MainFrame extends JFrame {
 		
 		add(toolbar, BorderLayout.NORTH);
 		
-		add(textPanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
+		add(tablePanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
 		
 		
 		setVisible(true);
