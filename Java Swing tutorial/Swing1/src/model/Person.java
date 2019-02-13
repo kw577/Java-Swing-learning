@@ -1,7 +1,14 @@
 package model;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8219218627533074108L;
+
 	// do autoinkrementacji atrybutu id
 	private static int count = 0;
 	

@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import gui.FormEvent;
@@ -8,6 +10,10 @@ import model.Database;
 import model.EmploymentCategory;
 import model.Gender;
 import model.Person;
+
+
+// controller jest laczniekiem czesci backendowej i frontendowej
+// obiekty gui uzywaja nie uzywaja metod obiektow backendu oprocz metod kontrolera 
 
 public class Controller {
 	
@@ -80,5 +86,16 @@ public class Controller {
 				empCategory, taxId, isUS, genderCat);
 		db.addPerson(person);
 	}
+	
+	
+	public void saveToFile(File file) throws IOException {
+		db.saveToFile(file);
+	}
+	
+	
+	public void loadFromFile(File file) throws IOException {
+		db.loadFromFile(file);
+	}
+	
 	
 }

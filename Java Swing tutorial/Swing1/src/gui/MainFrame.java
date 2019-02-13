@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -172,6 +173,17 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// otwiera okno wyszukiwania pliku po kliknieciu opcji "import" w menu glownym i pobiera plik
 				if(fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					try {
+						controller.loadFromFile(fileChooser.getSelectedFile());
+						tablePanel.refresh();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+						
+						// jesli wystapi blad przy otwarciu pliku pojawi sie okno z komunikatem
+						JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file", "Error", JOptionPane.ERROR_MESSAGE);
+						
+					}
 					System.out.println(fileChooser.getSelectedFile()); // wydruk w konsoli nazwy pobranego pliku
 				}
 				
@@ -187,6 +199,20 @@ public class MainFrame extends JFrame {
 				// otwiera okno wyszukiwania pliku po kliknieciu opcji "import" w menu glownym i pobiera plik
 				if(fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 					System.out.println(fileChooser.getSelectedFile()); // wydruk w konsoli nazwy pobranego pliku
+				
+					try {
+						controller.saveToFile(fileChooser.getSelectedFile());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+						
+						// jesli wystapi blad przy otwarciu pliku pojawi sie okno z komunikatem
+						JOptionPane.showMessageDialog(MainFrame.this, 
+								"Could not save data to file", "Error", 
+								JOptionPane.ERROR_MESSAGE);
+						
+					}
+				
 				}
 				
 			}
