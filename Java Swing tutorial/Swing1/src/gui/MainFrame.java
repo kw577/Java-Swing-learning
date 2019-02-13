@@ -56,6 +56,13 @@ public class MainFrame extends JFrame {
 		
 		tablePanel.setData(controller.getPeople());
 		
+		tablePanel.setPersonTableListener(new PersonTableListener() {
+			public void rowDeleted(int row) {
+				System.out.println("Deleted row: " + row);
+				controller.removePerson(row);
+			}
+		});
+		
 		//w celu ookreslenia jakie typy pliku beda obslugiwane (rozszerzenia pliku)
 		//jesli chcemy miec wiecej filtrow plikow nalezy stworzyc dla nich osobne klasy i dodac w kolejnej linii analogicznie jak dla filtra ponizej
 		fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -164,8 +171,12 @@ public class MainFrame extends JFrame {
 		exitItem.setMnemonic(KeyEvent.VK_X);
 		
 		
-		// ctrl + x    - zamyka program
+		// ctrl + x    - zamkniecie programu
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		
+		// ctrl + i    - wczytywanie danych z pliku	
+		importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+		
 		
 		importDataItem.addActionListener(new ActionListener() {
 

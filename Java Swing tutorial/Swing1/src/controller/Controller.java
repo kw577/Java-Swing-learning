@@ -96,6 +96,13 @@ public class Controller {
 	public void loadFromFile(File file) throws IOException {
 		db.loadFromFile(file);
 	}
+
+
+	public void removePerson(int index) {
+		// TODO Auto-generated method stub
+		
+		db.removePerson(index);
+	}
 	
 	
 }
