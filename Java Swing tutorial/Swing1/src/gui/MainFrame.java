@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
 	private JFileChooser fileChooser;
 	private Controller controller;
 	private TablePanel tablePanel;
-	
+	private PrefsDialog prefsDialog;
 	
 	public MainFrame() {	
 		super("Hello World");
@@ -49,6 +49,8 @@ public class MainFrame extends JFrame {
 		formPanel = new FormPanel();
 		
 		tablePanel = new TablePanel();
+		
+		prefsDialog = new PrefsDialog(this);
 		
 		fileChooser = new JFileChooser();
 		
@@ -138,6 +140,7 @@ public class MainFrame extends JFrame {
 		
 		
 		// po rozwinieciu przycisku "Window" na pasku menu pokazuja sie funkcje
+		JMenuItem prefsItem = new JMenuItem("Preferences...");
 		JMenu showMenu = new JMenu("Show"); // lista rozwijana funkcji
 		JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person Form");
 		
@@ -145,6 +148,19 @@ public class MainFrame extends JFrame {
 		
 		showMenu.add(showFormItem);
 		windowMenu.add(showMenu);
+		windowMenu.add(prefsItem);
+		
+		
+		prefsItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				prefsDialog.setVisible(true);
+			}
+			
+		});
+		
 		
 		showFormItem.addActionListener(new ActionListener(){
 
