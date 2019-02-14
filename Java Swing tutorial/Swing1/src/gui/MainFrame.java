@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame {
 	private Controller controller;
 	private TablePanel tablePanel;
 	private PrefsDialog prefsDialog;
+	private Preferences prefs;
 	
 	public MainFrame() {	
 		super("Hello World");
@@ -52,6 +54,8 @@ public class MainFrame extends JFrame {
 		
 		prefsDialog = new PrefsDialog(this);
 		
+		prefs = Preferences.userRoot().node("db");
+		
 		fileChooser = new JFileChooser();
 		
 		controller = new Controller();
@@ -64,6 +68,27 @@ public class MainFrame extends JFrame {
 				controller.removePerson(row);
 			}
 		});
+		
+		
+		prefsDialog.setPrefsListener(new PrefsListener() {
+
+			public void preferencesSet(String user, String password, int port) {
+				// TODO Auto-generated method stub
+				System.out.println(user + " " + password + " " + port);
+				
+				prefs.put("user", user);
+				prefs.put("password", password);
+				prefs.putInt("port", port);
+				
+			}
+			
+		});
+		
+		String user = prefs.get("user", ""); // "" - to wartosc domyslna
+		String password = prefs.get("password", "");
+		Integer port = prefs.getInt("port", 3306);
+		prefsDialog.setDefaults(user, password, port);
+		
 		
 		//w celu ookreslenia jakie typy pliku beda obslugiwane (rozszerzenia pliku)
 		//jesli chcemy miec wiecej filtrow plikow nalezy stworzyc dla nich osobne klasy i dodac w kolejnej linii analogicznie jak dla filtra ponizej
