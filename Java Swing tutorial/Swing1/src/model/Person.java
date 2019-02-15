@@ -21,7 +21,7 @@ public class Person implements Serializable {
 	private boolean usCitizen;
 	private Gender gender;
 	
-	//konstruktor
+	//konstruktor 1
 	public Person(String name, String occupation, AgeCategory ageCategory, 
 			EmploymentCategory empCat,
 			String taxId, boolean usCitizen, Gender gender) {
@@ -37,6 +37,24 @@ public class Person implements Serializable {
 		
 		// autoinkrementacja id
 		this.id = count;
+		count++;
+		
+	}
+	
+	//konstruktor 2
+	public Person(int id, String name, String occupation, AgeCategory ageCategory, 
+			EmploymentCategory empCat,
+			String taxId, boolean usCitizen, Gender gender) {
+
+		this.id = id;
+		this.name = name;
+		this.occupation = occupation;
+		this.ageCategory = ageCategory;
+		this.empCat = empCat;
+		this.taxId = taxId;
+		this.usCitizen = usCitizen;
+		this.gender = gender;
+		
 		count++;
 		
 	}
@@ -90,6 +108,11 @@ public class Person implements Serializable {
 	}
 	public void setGender(Gender gender) {
 		this.gender = gender;
+	}
+
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", occupation=" + occupation + ", ageCategory=" + ageCategory
+				+ ", empCat=" + empCat + ", taxId=" + taxId + ", usCitizen=" + usCitizen + ", gender=" + gender + "]";
 	}
 	
 	

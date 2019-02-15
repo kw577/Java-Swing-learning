@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -145,6 +146,39 @@ public class Database {
 		
 	}
 	
+	
+	public void load() throws SQLException {
+		people.clear();
+		
+		String sql = "SELECT id, name, age, employment_status, tax_id, us_citizen, gender, occupation FROM people ORDER BY name";
+		Statement selectStatement = con.createStatement();
+		ResultSet results = selectStatement.executeQuery(sql);
+		
+		
+		while(results.next()) {
+			int id = results.getInt("id");
+			String name = results.getString("name");
+			String age = results.getString("age");
+			String emp = results.getString("employment_status");
+			String tax = results.getString("tax_id");
+			boolean isUs = results.getBoolean("us_citizen");
+			String gender = results.getString("gender");
+			String occ = results.getString("occupation");
+			
+			//System.out.println(isUs);
+			
+			people.add(new Person(id, name, occ, AgeCategory.valueOf(age), 
+					EmploymentCategory.valueOf(emp), tax, isUs, 
+					Gender.valueOf(gender)));
+			
+			
+			
+		}
+		
+		
+		results.close();
+		selectStatement.close();
+	}
 	
 	
 	public void addPerson(Person person) {
