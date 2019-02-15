@@ -69,8 +69,30 @@ public class Database {
 		String checkSQL = "SELECT count(*) AS count FROM people WHERE id=?";
 		PreparedStatement checkStmt = con.prepareStatement(checkSQL);
 		
+		// komenda dodawania nowego rekordu do bazy
+		// ? oznaczaja parametry zapytania (tu atrybuty) takie podejscie zapobiega sql injection
+		String insertSql = "INSERT INTO people (id, name, age, employment_status, tax_id, us_citizen, gender, occupation) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		PreparedStatement insertStatement = con.prepareStatement(insertSql);
+		
+					
+		
+		// komenda do update'u rekordu
+		String updateSql = "UPDATE people SET name=?, age=?, employment_status=?, tax_id=?, us_citizen=?, gender=?, occupation=? WHERE id=?";
+		PreparedStatement updateStatement = con.prepareStatement(updateSql);
+		
+		
+		
 		for(Person person: people) {
 			int id = person.getId();
+			String name = person.getName();
+			String occupation = person.getOccupation();
+			AgeCategory age = person.getAgeCategory();
+			EmploymentCategory emp = person.getEmpCat();
+			String tax = person.getTaxId();
+			boolean isUs = person.isUsCitizen();
+			Gender gender = person.getGender();
+		
+			
 			checkStmt.setInt(1, id); // zamienia "?" na id okreslonej osoby
 			
 			
@@ -80,11 +102,45 @@ public class Database {
 			checkResult.next();
 			int count = checkResult.getInt(1); // sprawdzenie ile jest uztkownikow o okreslonym id
 			
-			System.out.println("Count for person with ID = " + id + " is " + count);
+			System.out.println("\nCount for person with ID = " + id + " is " + count);
+			
+			if(count == 0) {
+				System.out.println("Inserting person with ID = " + id);
+				
+				// dodawanie osoby do bazy danych (gdy w bazie nie ma osoby o takim id (UWAGA sprawdzane jest tylko id zeby stweirdzic czy dana osoba jes w bazie))
+				insertStatement.setInt(1, id); // zamieni pierwszy znak "?" na wartosc = id
+				insertStatement.setString(2, name);
+				insertStatement.setString(3, age.name());
+				insertStatement.setString(4, emp.name());
+				insertStatement.setString(5, tax);
+				insertStatement.setBoolean(6, isUs);
+				insertStatement.setString(7, gender.name());
+				insertStatement.setString(8, occupation);
+	
+				
+				insertStatement.executeUpdate();
+				
+			}
+			else {
+				// update danych osoby gdy jest ana juz w bazie (UWAGA sprawdzane jest tylko id zeby stweirdzic czy dana osoba jest w bazie))
+				System.out.println("Updating person with ID = " + id);
+				updateStatement.setString(1, name);
+				updateStatement.setString(2, age.name());
+				updateStatement.setString(3, emp.name());
+				updateStatement.setString(4, tax);
+				updateStatement.setBoolean(5, isUs);
+				updateStatement.setString(6, gender.name());
+				updateStatement.setString(7, occupation);
+				updateStatement.setInt(8, id);
+				
+				updateStatement.executeUpdate();
+				
+			}
 			
 		}
 		
-		
+		updateStatement.close();
+		insertStatement.close();
 		checkStmt.close();
 		
 	}
