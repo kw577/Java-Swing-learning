@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -99,13 +100,43 @@ public class MainFrame extends JFrame {
 		setJMenuBar(createMenuBar());
 		
 		
-		toolbar.setStringListener(new StringListener() {
+		toolbar.setToolbarListener(new ToolbarListener() {
 
-			@Override
-			public void textEmitted(String text) {
-				// TODO Auto-generated method stub
-				textPanel.appendText(text);
+
+			public void saveEventOccured() {
+				System.out.println("Save");
+			
+				connect();
+				
+				try {
+					controller.save();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to save to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+					
+				}
+				
 			}
+
+
+			public void refreshEventOccured() {
+				// TODO Auto-generated method stub
+				System.out.println("Refresh");
+				
+				connect();
+				
+				try {
+					controller.load();
+				} catch (SQLException e) {
+					
+					JOptionPane.showMessageDialog(MainFrame.this, "Unable to load from database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+					
+				}
+				
+				tablePanel.refresh();
+				
+			}
+
 			
 		});
 		
@@ -144,6 +175,15 @@ public class MainFrame extends JFrame {
 		setMinimumSize(new Dimension(600, 500));
 		setSize(600, 500);
 		
+	}
+	
+	private void connect() {
+		
+		try {
+			controller.connect();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database.", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private JMenuBar createMenuBar() {

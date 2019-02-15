@@ -9,20 +9,20 @@ import javax.swing.JPanel;
 
 public class Toolbar extends JPanel implements ActionListener{
 	
-	private JButton helloButton;
-	private JButton goodbyeButton;
+	private JButton saveButton;
+	private JButton refreshButton;
 	
-	private StringListener textListener;
+	private ToolbarListener textListener;
 	
 	public Toolbar() {
 		
 		setBorder(BorderFactory.createEtchedBorder());
 		
-		helloButton = new JButton("Hello");
-		goodbyeButton = new JButton("Goodbye");
+		saveButton = new JButton("Save");
+		refreshButton = new JButton("Refresh");
 		
-		helloButton.addActionListener(this);
-		goodbyeButton.addActionListener(this);
+		saveButton.addActionListener(this);
+		refreshButton.addActionListener(this);
 		
 		
 		
@@ -32,8 +32,8 @@ public class Toolbar extends JPanel implements ActionListener{
 		
 		setLayout(new FlowLayout(FlowLayout.LEFT)); // przyciski po lewej stronie panelu
 		
-		add(helloButton);
-		add(goodbyeButton);
+		add(saveButton);
+		add(refreshButton);
 	}
 	
 	
@@ -41,7 +41,7 @@ public class Toolbar extends JPanel implements ActionListener{
 
 
 
-	public void setStringListener(StringListener listener) {
+	public void setToolbarListener(ToolbarListener listener) {
 		this.textListener = listener;
 	}
 
@@ -55,23 +55,23 @@ public class Toolbar extends JPanel implements ActionListener{
 		
 		JButton clicked = (JButton)e.getSource(); // getSource zwraca Object - ale w tym przypadku sa jedynie obiekty typu JButton - zatem stosuje sie rzutowanie
 	
-		if(clicked == helloButton) {
+		if(clicked == saveButton) {
 			//System.out.println("Hello");
 			
 			//textPanel.appendText("Hello\n");
 			
 			if(textListener != null) {
-				textListener.textEmitted("Hello");
+				textListener.saveEventOccured();
 			}
 			
 			
-		} else if (clicked == goodbyeButton) {
+		} else if (clicked == refreshButton) {
 			//System.out.println("Goodbye");
 			
 			//textPanel.appendText("Goodbye\n");
 			
 			if(textListener != null) {
-				textListener.textEmitted("Goodbye");
+				textListener.refreshEventOccured();
 			}
 			
 		}
