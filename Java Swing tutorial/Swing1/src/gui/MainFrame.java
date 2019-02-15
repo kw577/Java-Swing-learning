@@ -218,6 +218,10 @@ public class MainFrame extends JFrame {
 		// ctrl + i    - wczytywanie danych z pliku	
 		importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 		
+		// ctrl + p    - otworzy okno preferencji	
+		prefsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
+				
+		
 		
 		importDataItem.addActionListener(new ActionListener() {
 
