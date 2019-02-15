@@ -22,7 +22,9 @@ import controller.Controller;
 
 // https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html   - opis layoutu w Swing'u
 
-
+// do polaczenia z baza danych nalezy dodac mysql-connector.jar
+// W Project Explorer znalezc projekt w ktowym ma byc uzywana baza -> PPM -> Build Path -> Configure Build Path -> Libraries -> Add external JARs -> znalezc lokalizacje pliku mysql-connector.bin -> zapisac zmiany
+// po dodaniu mysql-connector powinien byc widoczny w folderze Referenced Libraries projektu
 
 public class MainFrame extends JFrame {
 	

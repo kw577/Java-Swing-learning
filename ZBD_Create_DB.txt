@@ -1,0 +1,21 @@
+CREATE DATABASE swingtest;
+USE swingtest;
+
+CREATE TABLE `people` (
+	`id`			INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name`			VARCHAR(45) NOT NULL,
+	`age`			ENUM('child', 'adult', 'senior') NOT NULL,
+	`employment_status`	VARCHAR(45) NOT NULL,
+	`tax_id`		VARCHAR(45),
+	`us_citizen`		BOOLEAN NOT NULL,	
+	`gender`		ENUM('male', 'female') NOT NULL,
+	`occupation`		VARCHAR(45),
+	
+	PRIMARY KEY (`id`)
+
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+
+INSERT INTO people (name, age, employment_status, tax_id, us_citizen, gender, occupation) VALUES ('Jan', 'adult', 'employed', '555555555', true, 'male', 'driver');
