@@ -171,6 +171,7 @@ public class FormPanel extends JPanel{
 		
 		
 		setPreferredSize(dim);
+		setMinimumSize(dim); // po wlaczeniu widoku pola formularza przyjmuje on taka szerokosc
 		
 		//Obramowanie formularza
 		Border innerBorder = BorderFactory.createTitledBorder("Add person");

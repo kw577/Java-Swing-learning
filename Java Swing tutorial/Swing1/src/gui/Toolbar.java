@@ -7,9 +7,9 @@ import java.net.URL;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
-public class Toolbar extends JPanel implements ActionListener{
+public class Toolbar extends JToolBar implements ActionListener{
 	
 	private JButton saveButton;
 	private JButton refreshButton;
@@ -18,18 +18,21 @@ public class Toolbar extends JPanel implements ActionListener{
 	
 	public Toolbar() {
 		
-		setBorder(BorderFactory.createEtchedBorder());
+		// po odznaczeniu 2 ponizszych opcji pasek narzedzi jest "dragable" - mozna go "przeciagnac" do osobnego okna
+		//setBorder(BorderFactory.createEtchedBorder());
+		//setFloatable(false);
 		
-		saveButton = new JButton("Save");
 		
+		saveButton = new JButton();
 		saveButton.setIcon(createIcon("/images/Save16.gif"));
+		saveButton.setToolTipText("Save"); // po najechaniu kursorem na przycisk wyswietli sie ten komunikat
 		
-		refreshButton = new JButton("Refresh");
+		refreshButton = new JButton();
 		
 		saveButton.addActionListener(this);
 		refreshButton.addActionListener(this);
 		refreshButton.setIcon(createIcon("/images/Refresh16.gif"));
-		
+		refreshButton.setToolTipText("Refresh");
 		
 		// UWAGA - zastosowano tu Flow Layout
 		
@@ -38,6 +41,7 @@ public class Toolbar extends JPanel implements ActionListener{
 		setLayout(new FlowLayout(FlowLayout.LEFT)); // przyciski po lewej stronie panelu
 		
 		add(saveButton);
+		//addSeparator();//odstep miedzy przyciksami
 		add(refreshButton);
 	}
 	

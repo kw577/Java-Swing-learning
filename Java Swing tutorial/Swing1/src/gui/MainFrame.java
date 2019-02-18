@@ -18,6 +18,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 
 import controller.Controller;
@@ -43,6 +44,8 @@ public class MainFrame extends JFrame {
 	private TablePanel tablePanel;
 	private PrefsDialog prefsDialog;
 	private Preferences prefs;
+	private JSplitPane splitPane;
+	
 	
 	public MainFrame() {	
 		super("Hello World");
@@ -59,6 +62,11 @@ public class MainFrame extends JFrame {
 		tablePanel = new TablePanel();
 		
 		prefsDialog = new PrefsDialog(this);
+		
+		// po lewej stronie dodajemy formPanel a po prawej tablePanel
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tablePanel);
+		
+		splitPane.setOneTouchExpandable(true); // dodaje przyciski do suwaka spliPane ktore pozwalaja na jego ukrycie
 		
 		prefs = Preferences.userRoot().node("db");
 		
@@ -175,12 +183,9 @@ public class MainFrame extends JFrame {
 			
 		});
 		
-		add(formPanel, BorderLayout.WEST);	
+		add(toolbar, BorderLayout.PAGE_START);
 		
-		add(toolbar, BorderLayout.NORTH);
-		
-		add(tablePanel, BorderLayout.CENTER);  // TextPanel (JPanel) ustawione w centrum i wypelnia cale dostepne miejsce
-		
+		add(splitPane, BorderLayout.CENTER);
 		
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -247,6 +252,12 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem)e.getSource();
+				
+				// jesli ukryjemy a nastepnie ponownie wlaczymy panel formularza nalezy odpowiednio ustawic belke podzialu spliPanelu
+				if(menuItem.isSelected()) {
+					splitPane.setDividerLocation((int)formPanel.getMinimumSize().getWidth());
+				}
+				
 				
 				// ukrywa formularz po odznaczeniu opcji w pasku menu 
 				formPanel.setVisible(menuItem.isSelected());
