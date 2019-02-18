@@ -4,3 +4,4 @@ https://www.youtube.com/watch?v=OxaSi3nSl3I     - tutorial
 http://web.mit.edu/6.005/www/sp14/psets/ps4/java-6-tutorial/components.html      - opis wszytkich komponentów swing
 https://www.eclipse.org/windowbuilder/    - graficzne budowanie GUI w Swing
 https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html     - layout 
+https://www.oracle.com/technetwork/java/index-138612.html     - ikonki (grafika)

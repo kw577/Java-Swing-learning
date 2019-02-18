@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
@@ -161,7 +164,16 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		
+		addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Window closing");
+				controller.disconnect();
+				dispose();
+				System.gc(); // wlaczy garbage collector
+			}
+			
+		});
 		
 		add(formPanel, BorderLayout.WEST);	
 		
@@ -171,7 +183,7 @@ public class MainFrame extends JFrame {
 		
 		
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setMinimumSize(new Dimension(600, 500));
 		setSize(600, 500);
 		
@@ -339,7 +351,13 @@ public class MainFrame extends JFrame {
 						"Confirm Exit", JOptionPane.OK_CANCEL_OPTION);
 				
 				if(action == JOptionPane.OK_OPTION) {
-					System.exit(0);
+					WindowListener[] listeners = getWindowListeners();
+					
+					
+					for(WindowListener listener: listeners) {
+						listener.windowClosing(new WindowEvent(MainFrame.this, 0));
+					}
+					
 				}
 					
 			}
