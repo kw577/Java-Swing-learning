@@ -5,10 +5,9 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 
@@ -52,38 +51,37 @@ public class MessagePanel extends JPanel {
 
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
+	private ServerTreeCellEditor treeCellEditor;
 	
 	
 	
 	public MessagePanel() {
 		
 		treeCellRenderer = new ServerTreeCellRenderer();
-				
+		treeCellEditor = new ServerTreeCellEditor();
+		
 		serverTree = new JTree(createTree());
 		
 		serverTree.setCellRenderer(treeCellRenderer);
+		serverTree.setCellEditor(treeCellEditor);
+		serverTree.setEditable(true);
 		
 		// mozna wybrac tylko jeden wezel drzewa na raz
 		serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		
-		serverTree.addTreeSelectionListener(new TreeSelectionListener() {
+		treeCellEditor.addCellEditorListener(new CellEditorListener() {
 
-			@Override
-			public void valueChanged(TreeSelectionEvent e) {
-				// TODO Auto-generated method stub
-				DefaultMutableTreeNode node = (DefaultMutableTreeNode)serverTree.getLastSelectedPathComponent();
+	
+			public void editingCanceled(ChangeEvent arg0) {
 			
-				Object userObject = node.getUserObject();
 				
-				// sprawdzamy czy zostal zwrocony obiekt typu ServerInfo
-				if(userObject instanceof ServerInfo) {
-					int id = ((ServerInfo)userObject).getId();
-					
-					System.out.println("Got user object with ID: " + id);
-				}
+			}
+
+			public void editingStopped(ChangeEvent arg0) {
 				
+				ServerInfo info = (ServerInfo)treeCellEditor.getCellEditorValue();
 				
-				System.out.println(userObject);
+				System.out.println(info + ": " + info.getId() + ": " + info.isChecked());
 				
 			}
 			
