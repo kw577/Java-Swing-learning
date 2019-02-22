@@ -7,9 +7,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -61,12 +63,14 @@ public class MessagePanel extends JPanel {
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
 	private ServerTreeCellEditor treeCellEditor;
+	private ProgressDialog progressDialog;
 	
 	private Set<Integer> selectedServers;
 	private MessageServer messageServer;
 	
-	public MessagePanel() {
+	public MessagePanel(JFrame parent) {
 		
+		progressDialog = new ProgressDialog(parent);
 		messageServer = new MessageServer();
 		
 		selectedServers = new TreeSet<Integer>();
@@ -124,7 +128,10 @@ public class MessagePanel extends JPanel {
 	
 	private void retrieveMessages() {
 			
-		System.out.println("Messages waiting: " + messageServer.getMessageCount());
+		//System.out.println("Messages waiting: " + messageServer.getMessageCount());
+		
+		progressDialog.setMaximum(messageServer.getMessageCount());
+		progressDialog.setVisible(true);		
 		
 		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>(){
 
@@ -133,7 +140,7 @@ public class MessagePanel extends JPanel {
 			protected void done() {
 				try {
 					List<Message> retrievedMessages = get();
-					System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
+					//System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -141,13 +148,18 @@ public class MessagePanel extends JPanel {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
+				progressDialog.setVisible(false);
+				
 			}
 			
 			@Override
 			protected void process(List<Integer> counts) {
 				
 				int retrieved = counts.get(counts.size() - 1);
-				System.out.println("Got " + retrieved + " messages.");
+				//System.out.println("Got " + retrieved + " messages.");
+				progressDialog.setValue(retrieved);
+				
 			}
 
 			@Override
