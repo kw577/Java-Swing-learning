@@ -58,7 +58,7 @@ class ServerInfo {
 }
 
 
-public class MessagePanel extends JPanel {
+public class MessagePanel extends JPanel implements ProgressDialogListener {
 
 	private JTree serverTree;
 	private ServerTreeCellRenderer treeCellRenderer;
@@ -67,11 +67,15 @@ public class MessagePanel extends JPanel {
 	
 	private Set<Integer> selectedServers;
 	private MessageServer messageServer;
+	private SwingWorker<List<Message>, Integer> worker;
+	
 	
 	public MessagePanel(JFrame parent) {
 		
-		progressDialog = new ProgressDialog(parent);
+		progressDialog = new ProgressDialog(parent, "Messages downloading...");
 		messageServer = new MessageServer();
+		
+		progressDialog.setListener(this);
 		
 		selectedServers = new TreeSet<Integer>();
 		selectedServers.add(0);
@@ -133,11 +137,16 @@ public class MessagePanel extends JPanel {
 		progressDialog.setMaximum(messageServer.getMessageCount());
 		progressDialog.setVisible(true);		
 		
-		SwingWorker<List<Message>, Integer> worker = new SwingWorker<List<Message>, Integer>(){
+		worker = new SwingWorker<List<Message>, Integer>(){
 
 			
 			@Override
 			protected void done() {
+				
+				progressDialog.setVisible(false);
+				
+				if(isCancelled()) return;
+				
 				try {
 					List<Message> retrievedMessages = get();
 					//System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
@@ -149,7 +158,7 @@ public class MessagePanel extends JPanel {
 					e.printStackTrace();
 				}
 				
-				progressDialog.setVisible(false);
+				
 				
 			}
 			
@@ -169,6 +178,9 @@ public class MessagePanel extends JPanel {
 				int count = 0;
 				
 				for(Message message: messageServer) {
+					
+					if(isCancelled()) break;
+					
 					System.out.println(message.getTitle());
 					retrievedMessages.add(message);
 					
@@ -219,6 +231,17 @@ public class MessagePanel extends JPanel {
 		
 		
 		return top;
+	}
+
+	@Override
+	public void progressDialogCancelled() {
+		
+		//System.out.println("Cancelled");
+		
+		if(worker != null) {
+			worker.cancel(true);
+		}
+		
 	}
 	
 	
