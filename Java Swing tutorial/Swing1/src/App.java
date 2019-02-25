@@ -1,6 +1,7 @@
-package gui;
-import javax.swing.JFrame;
+
 import javax.swing.SwingUtilities;
+
+import gui.MainFrame;
 
 public class App {
 

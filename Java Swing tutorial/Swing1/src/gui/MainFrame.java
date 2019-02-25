@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import controller.Controller;
 
@@ -35,9 +37,7 @@ import controller.Controller;
 public class MainFrame extends JFrame {
 	
 	
-	
-	
-	private TextPanel textPanel;
+
 	private Toolbar toolbar;
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
@@ -56,7 +56,6 @@ public class MainFrame extends JFrame {
 		// UWAGA  - w tym przykladzie zastosowano BorderLayout   - tu opisano inne dostepne layout'y https://docs.oracle.com/javase/tutorial/uiswing/layout/visual.html
 		setLayout(new BorderLayout());
 		
-		textPanel = new TextPanel();
 		toolbar = new Toolbar();
 		formPanel = new FormPanel();
 		tablePanel = new TablePanel();
@@ -86,6 +85,21 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		
+		tabPane.addChangeListener(new ChangeListener() {
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				
+				int tabIndex = tabPane.getSelectedIndex();
+				
+				if(tabIndex == 1) {
+					messagePanel.refresh();
+				}
+				
+			}
+			
+		});
 		
 		prefsDialog.setPrefsListener(new PrefsListener() {
 

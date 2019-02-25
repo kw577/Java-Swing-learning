@@ -1,17 +1,20 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -68,10 +71,18 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 	private Set<Integer> selectedServers;
 	private MessageServer messageServer;
 	private SwingWorker<List<Message>, Integer> worker;
+	private TextPanel textPanel;
+	private JList messageList;
+	
+	private JSplitPane upperPane;
+	private JSplitPane lowerPane;
+	
+	private DefaultListModel messageListModel;
 	
 	
 	public MessagePanel(JFrame parent) {
 		
+		messageListModel = new DefaultListModel();
 		progressDialog = new ProgressDialog(parent, "Messages downloading...");
 		messageServer = new MessageServer();
 		
@@ -94,6 +105,8 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		
 		// mozna wybrac tylko jeden wezel drzewa na raz
 		serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		
+		messageServer.setSelectedServers(selectedServers);
 		
 		treeCellEditor.addCellEditorListener(new CellEditorListener() {
 
@@ -127,8 +140,29 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		
 		setLayout(new BorderLayout());
 		
-		add(new JScrollPane(serverTree), BorderLayout.CENTER);
+		textPanel = new TextPanel();
+		messageList = new JList(messageListModel);
+		
+		
+		// utworzenie okna z dwiema liniami podzialu - podzial na 3 okna - jedno zajmuje serverTree, drugie lista wiadomosci a trzecie obszar wpisywania tekstu
+		lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(messageList), textPanel);
+		upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
+		
+		
+		textPanel.setMinimumSize(new Dimension(10, 100));
+		messageList.setMinimumSize(new Dimension(10, 100));
+		
+		upperPane.setResizeWeight(0.5);// przy zwiekszaniu okna programu - zanjmie 0.5 dostepnej nowa przestrzen
+		lowerPane.setResizeWeight(0.5);
+		
+		add(upperPane, BorderLayout.CENTER);
 	}
+	
+	
+	public void refresh() {
+		retrieveMessages();
+	}
+	
 	
 	private void retrieveMessages() {
 			
@@ -149,6 +183,14 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 				
 				try {
 					List<Message> retrievedMessages = get();
+					
+					messageListModel.removeAllElements();
+					
+					for(Message message: retrievedMessages) {
+						messageListModel.addElement(message.getTitle());
+					}
+					
+					
 					//System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
