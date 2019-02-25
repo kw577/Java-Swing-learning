@@ -18,6 +18,8 @@ import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
@@ -142,6 +144,19 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 		
 		textPanel = new TextPanel();
 		messageList = new JList(messageListModel);
+		messageList.setCellRenderer(new MessageListRenderer());
+		
+		messageList.addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent arg0) {
+				Message message = (Message)messageList.getSelectedValue();
+				
+				textPanel.setText(message.getContents());
+			}
+			
+		});
+		
 		
 		
 		// utworzenie okna z dwiema liniami podzialu - podzial na 3 okna - jedno zajmuje serverTree, drugie lista wiadomosci a trzecie obszar wpisywania tekstu
@@ -187,9 +202,11 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 					messageListModel.removeAllElements();
 					
 					for(Message message: retrievedMessages) {
-						messageListModel.addElement(message.getTitle());
+						messageListModel.addElement(message);
 					}
 					
+					// domyslnie wybrany pierwszy element (i wyswietlony w JTextArea)
+					messageList.setSelectedIndex(0);
 					
 					//System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
 				} catch (InterruptedException e) {
